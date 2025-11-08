@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CopilotDiffPersistence">
+    <option name="pendingDiffs">
+      <map>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/kundaliai/roomRepository/AstrologyReadingDao.kt">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/app/src/main/java/com/example/kundaliai/roomRepository/AstrologyReadingDao.kt" />
+              <option name="originalContent" value="package com.example.kundaliai.roomRepository&#10;&#10;&#10;import androidx.room.Dao&#10;import androidx.room.Insert&#10;import androidx.room.OnConflictStrategy&#10;import androidx.room.Query&#10;&#10;@Dao&#10;interface AstrologyReadingDao {&#10;    // Replace existing row when username (or primary key) conflicts to prevent duplicates&#10;    @Insert(onConflict = OnConflictStrategy.REPLACE)&#10;    suspend fun insertReading(reading: AstrologyReading)&#10;&#10;    @Query(&quot;SELECT * FROM astrology_readings WHERE username = :username&quot;)&#10;    suspend fun getReadingsByUsername(username: String): List&lt;AstrologyReading&gt;&#10;&#10;    @Query(&quot;SELECT * FROM astrology_readings ORDER BY timestamp DESC&quot;)&#10;    suspend fun getAllReadings(): List&lt;AstrologyReading&gt;&#10;}&#10;" />
+              <option name="updatedContent" value="package com.example.kundaliai.roomRepository&#10;&#10;&#10;import androidx.room.Dao&#10;import androidx.room.Insert&#10;import androidx.room.OnConflictStrategy&#10;import androidx.room.Query&#10;&#10;@Dao&#10;interface AstrologyReadingDao {&#10;    // Replace existing row when username (or primary key) conflicts to prevent duplicates&#10;    @Insert(onConflict = OnConflictStrategy.REPLACE)&#10;    suspend fun insertReading(reading: AstrologyReading)&#10;&#10;    @Query(&quot;SELECT * FROM astrology_readings WHERE username = :username&quot;)&#10;    suspend fun getReadingsByUsername(username: String): List&lt;AstrologyReading&gt;&#10;&#10;    @Query(&quot;SELECT * FROM astrology_readings ORDER BY timestamp DESC&quot;)&#10;    suspend fun getAllReadings(): List&lt;AstrologyReading&gt;&#10;}" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

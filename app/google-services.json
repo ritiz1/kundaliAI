@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "233288917541",
+    "project_id": "kundaliai",
+    "storage_bucket": "kundaliai.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:233288917541:android:422211f5e5342611bdd5cc",
+        "android_client_info": {
+          "package_name": "com.example.kundaliai"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4YklLdzpEd94q57WjlHCt8weJQ7dTR78"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
