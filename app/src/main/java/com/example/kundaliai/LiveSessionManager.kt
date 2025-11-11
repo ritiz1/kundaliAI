@@ -28,7 +28,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(PublicPreviewAPI::class)
-class LiveSessionManager(private val context: Context) {
+class LiveSessionManager(
+    private val context: Context,
+    private val astrologyJsonData: String = ""  // Add JSON data parameter
+) {
 
     private var job: Job? = null
     var session: LiveSession? = null
@@ -64,7 +67,15 @@ class LiveSessionManager(private val context: Context) {
                 speechConfig = SpeechConfig(voice = Voice(currentVoice))
             },
             systemInstruction = content {
-                text("You are a caring AI who is like bestfriend to the user. Keep responses brief and engaging.")
+                text("""
+                    You are an expert Vedic astrologer and you speak honest . When its about love you are sweet, when its about carreer you are brutally honest. Donot sugercoat.
+                    
+                    The user's birth chart data is:
+                    $astrologyJsonData
+                    
+                    Analyze their chart and answer their questions with wisdom.
+                    Keep responses brief and engaging.
+                """.trimIndent())
             }
         )
     }

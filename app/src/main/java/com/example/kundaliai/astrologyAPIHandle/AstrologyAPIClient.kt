@@ -36,7 +36,7 @@ object AstrologyApiClient {
     }
 
     // The API's address
-    private const val API_URL = "https://json.freeastrologyapi.com/navamsa-chart-info"
+    private const val API_URL = "https://json.freeastrologyapi.com/planets"
 
     /**
      * Calls the astrology API and returns the raw JSON string.
@@ -50,7 +50,7 @@ object AstrologyApiClient {
 
         // --- !!! IMPORTANT !!! ---
         // Replace this with your actual API key
-        val apiKey = ""
+        val apiKey = "jTqNwH0WKK2RSlE86jycwJhBVXrOz4c37W849m6c"
         // -------------------------
 
         try {

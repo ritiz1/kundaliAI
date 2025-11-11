@@ -2,7 +2,14 @@ package com.example.kundaliai.navigation
 
 interface Destination{
     val route:  String
+}
 
+object UserQueryDestination : Destination {
+    override val route: String = "user_query"
+}
+
+object LiveSessionDestination : Destination {
+    override val route: String = "live_session"
 }
 
 object HomeDestination : Destination{
@@ -13,8 +20,8 @@ object ProfileDestination : Destination {
     override val route :String = "profile"
 }
 
-object VoiceChat: Destination {
-    override val route: String = "voicechat"
+object LiveSessionScreen: Destination {
+    override val route: String = "livesessionscreen"
 }
 
 object ObBoardingScreen : Destination {
