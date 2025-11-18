@@ -131,7 +131,7 @@ fun LiveSessionScreen(username: String) {
                 Text(
                     text = "Ask me anything about your birth chart!",
                     fontSize = 14.sp,
-                    color = KundaliTextWhite.copy(alpha = 0.7f)
+                    color = KundaliOrangePrimary.copy(alpha = 0.7f)
                 )
                 Spacer(modifier = Modifier.height(32.dp))
                 Button(
@@ -165,40 +165,3 @@ fun LiveSessionScreen(username: String) {
     }
 }
 
-@Composable
-fun LiveSessionScreene() {
-    // Default screen with no username - show instruction
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text(
-            text = "🎙️",
-            fontSize = 64.sp
-        )
-        Spacer(modifier = Modifier.height(24.dp))
-        Text(
-            text = "Live Session Ready!",
-            fontSize = 28.sp,
-            fontWeight = FontWeight.Bold,
-            color = KundaliTextWhite
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = "Your Kundali has been generated successfully.",
-            fontSize = 16.sp,
-            color = KundaliOrangePrimary
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Text(
-            text = "This is where your AI conversation will happen!",
-            fontSize = 14.sp,
-            color = KundaliTextWhite.copy(alpha = 0.7f)
-        )
-    }
-}

@@ -4,77 +4,90 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.migration.Migration
-import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.kundaliai.roomRepository.birthDetails.User
+import com.example.kundaliai.roomRepository.birthDetails.UserDao
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.okhttp.OkHttp
+import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.request.header
+import io.ktor.client.request.setBody
+import io.ktor.client.call.body
+import io.ktor.client.request.post
+import io.ktor.http.ContentType
+import io.ktor.http.HttpStatusCode
+import io.ktor.http.contentType
+import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.json.Json
 
-// Bumped version from 1 -> 2 to match the schema change (added unique index on `username`).
-@Database(entities = [AstrologyReading::class], version = 2, exportSchema = true)
+@Database(
+    entities = [AstrologyReading::class, User::class],
+    version = 1,
+    exportSchema = false
+)
 abstract class AstrologyDatabase : RoomDatabase() {
     abstract fun astrologyReadingDao(): AstrologyReadingDao
+    abstract fun userDao(): UserDao
 
     companion object {
         @Volatile
         private var INSTANCE: AstrologyDatabase? = null
 
-        // Migration from 1 -> 2: robustly handle duplicates and create the unique index on username.
-        private val MIGRATION_1_2 = object : Migration(1, 2) {
-            override fun migrate(db: SupportSQLiteDatabase) {
-                // 1) Create a new table with the desired schema (id autogen, username, jsonData, timestamp)
-                db.execSQL(
-                    """
-                    CREATE TABLE IF NOT EXISTS astrology_readings_new (
-                        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-                        username TEXT NOT NULL,
-                        jsonData TEXT NOT NULL,
-                        timestamp INTEGER NOT NULL
-                    )
-                    """.trimIndent()
-                )
-
-                // 2) Copy one row per username into the new table. Choose the row with the latest timestamp.
-                db.execSQL(
-                    """
-                    INSERT INTO astrology_readings_new (username, jsonData, timestamp)
-                    SELECT ar.username, ar.jsonData, ar.timestamp
-                    FROM astrology_readings ar
-                    INNER JOIN (
-                        SELECT username, MAX(timestamp) as maxts
-                        FROM astrology_readings
-                        GROUP BY username
-                    ) grouped
-                    ON ar.username = grouped.username AND ar.timestamp = grouped.maxts
-                    """.trimIndent()
-                )
-
-                // 3) Drop the old table
-                db.execSQL("DROP TABLE IF EXISTS astrology_readings")
-
-                // 4) Rename the new table to the expected name
-                db.execSQL("ALTER TABLE astrology_readings_new RENAME TO astrology_readings")
-
-                // 5) Create the unique index on username (Room expects this index)
-                db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS index_astrology_readings_username ON astrology_readings(username)")
-            }
-        }
-
         fun getDatabase(context: Context): AstrologyDatabase {
             return INSTANCE ?: synchronized(this) {
-                val builder = Room.databaseBuilder(
-                    context,
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
                     AstrologyDatabase::class.java,
                     "astrology_db"
                 )
-
-                // Register the migration so existing DBs will be migrated in-place.
-                // If you prefer to drop & recreate the DB during development instead, use
-                // .fallbackToDestructiveMigration() instead.
-                val instance = builder
-                    .addMigrations(MIGRATION_1_2)
+                    .fallbackToDestructiveMigration(true)
                     .build()
 
                 INSTANCE = instance
                 instance
             }
+        }
+    }
+}
+
+object AstrologyApiClient {
+
+    private val client = HttpClient(OkHttp) {
+        install(HttpTimeout) {
+            requestTimeoutMillis = 15_000
+            connectTimeoutMillis = 10_000
+            socketTimeoutMillis = 15_000
+        }
+        install(ContentNegotiation) {
+            json(Json {
+                prettyPrint = true
+                ignoreUnknownKeys = true
+            })
+        }
+    }
+
+    private const val API_URL = "https://json.freeastrologyapi.com/planets"
+
+    suspend fun getNavamsaInfoJsonString(requestData: com.example.kundaliai.astrologyAPIHandle.NavamsaRequest): String? {
+        val apiKey = ""
+
+        return try {
+            val response = client.post(API_URL) {
+                header("x-api-key", apiKey)
+                contentType(ContentType.Application.Json)
+                setBody(requestData)
+            }
+
+            if (response.status == HttpStatusCode.OK) {
+                response.body<String>()
+            } else {
+                println("API Error: ${response.status.description}")
+                println("Error content: ${response.body<String>()}")
+                null
+            }
+        } catch (e: Exception) {
+            println("Request failed: ${e.message}")
+            null
         }
     }
 }

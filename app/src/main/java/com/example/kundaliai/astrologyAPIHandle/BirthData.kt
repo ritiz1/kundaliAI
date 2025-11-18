@@ -12,3 +12,10 @@ data class BirthData(
 
 
 )
+
+data class SavedPerson(
+    val id: String = "",
+    val birthData: BirthData,
+    val timestamp: Long = System.currentTimeMillis()
+
+)

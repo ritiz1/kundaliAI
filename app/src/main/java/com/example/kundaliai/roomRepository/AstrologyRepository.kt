@@ -1,7 +1,6 @@
-package com.example.kundaliai.astrologyAPIHandle
+package com.example.kundaliai.roomRepository
 
-import com.example.kundaliai.roomRepository.AstrologyReading
-import com.example.kundaliai.roomRepository.AstrologyReadingDao
+import com.example.kundaliai.astrologyAPIHandle.NavamsaRequest
 
 class AstrologyRepository(private val dao: AstrologyReadingDao) {
 
