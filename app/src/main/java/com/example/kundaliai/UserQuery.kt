@@ -23,6 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.kundaliai.astrologyAPIHandle.BirthData
+import com.example.kundaliai.navigation.LiveSessionDestination
 import com.example.kundaliai.ui.theme.*
 import java.util.Calendar
 import java.util.Locale

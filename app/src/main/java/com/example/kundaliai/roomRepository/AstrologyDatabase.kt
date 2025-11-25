@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.kundaliai.astrologyAPIHandle.KundliRequest
 import com.example.kundaliai.roomRepository.birthDetails.User
 import com.example.kundaliai.roomRepository.birthDetails.UserDao
 import io.ktor.client.HttpClient
@@ -66,14 +67,21 @@ object AstrologyApiClient {
         }
     }
 
-    private const val API_URL = "https://json.freeastrologyapi.com/planets"
+    private const val API_KEY = ""
 
-    suspend fun getNavamsaInfoJsonString(requestData: com.example.kundaliai.astrologyAPIHandle.NavamsaRequest): String? {
-        val apiKey = ""
+    object Endpoints {
+        const val PLANETS = "https://json.freeastrologyapi.com/planets"
+        const val D9_DATA = "https://json.freeastrologyapi.com/navamsa-chart-info"
+        const val DASHA_DATA = "https://json.freeastrologyapi.com/vimsottari/maha-dasas-and-antar-dasas"
+    }
 
+    suspend fun getAstrologyData(
+        endpoint: String,
+        requestData: KundliRequest
+    ): String? {
         return try {
-            val response = client.post(API_URL) {
-                header("x-api-key", apiKey)
+            val response = client.post(endpoint) {
+                header("x-api-key", API_KEY)
                 contentType(ContentType.Application.Json)
                 setBody(requestData)
             }
@@ -91,3 +99,4 @@ object AstrologyApiClient {
         }
     }
 }
+

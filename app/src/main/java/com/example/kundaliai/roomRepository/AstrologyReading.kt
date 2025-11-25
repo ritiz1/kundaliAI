@@ -6,9 +6,10 @@ import androidx.room.Index
 
 @Entity(tableName = "astrology_readings", indices = [Index(value = ["username"], unique = true)])
 data class AstrologyReading(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    @PrimaryKey
     val username: String,
-    val jsonData: String,
+    val d1Data: String,
+    val d9Data: String="",
+    val dashaData: String="",
     val timestamp: Long = System.currentTimeMillis()
 )

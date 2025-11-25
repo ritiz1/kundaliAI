@@ -46,6 +46,13 @@ android {
 }
 
 dependencies {
+    implementation("androidx.compose.material:material-icons-extended")
+
+    implementation ("androidx.compose.ui:ui:<compose-version>")
+    implementation ("androidx.compose.material3:material3:<material3-version>")
+    implementation ("androidx.navigation:navigation-compose:<nav-version>")
+
+
 
     implementation(platform("com.google.firebase:firebase-bom:34.4.0"))
     implementation("com.google.firebase:firebase-ai")

@@ -5,7 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kundaliai.roomRepository.AstrologyRepository
 import com.example.kundaliai.astrologyAPIHandle.BirthData
-import com.example.kundaliai.astrologyAPIHandle.NavamsaRequest
+import com.example.kundaliai.astrologyAPIHandle.KundliRequest
 import com.example.kundaliai.roomRepository.AstrologyDatabase
 import com.example.kundaliai.roomRepository.birthDetails.User
 import com.example.kundaliai.roomRepository.birthDetails.UserRepository
@@ -65,7 +65,7 @@ class UserQueryViewModel(application: Application) : AndroidViewModel(applicatio
                 val month = dateParts[1].toIntOrNull() ?: 1
                 val year = dateParts[2].toIntOrNull() ?: 2000
 
-                val navamsaRequest = NavamsaRequest(
+                val navamsaRequest = KundliRequest(
                     year = year,
                     month = month,
                     date = day,

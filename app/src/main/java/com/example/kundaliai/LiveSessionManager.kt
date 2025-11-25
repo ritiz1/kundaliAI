@@ -30,7 +30,9 @@ import kotlinx.coroutines.launch
 @OptIn(PublicPreviewAPI::class)
 class LiveSessionManager(
     private val context: Context,
-    private val astrologyJsonData: String = ""  // Add JSON data parameter
+    private val d1Data:String? ,
+    private val d9Data: String? ,
+    private val dashaData: String? // Add JSON data parameter
 ) {
 
     private var job: Job? = null
@@ -51,6 +53,7 @@ class LiveSessionManager(
     // Keep track of previous audio routing state so we can restore it on cleanup
     private var previousAudioMode: Int? = null
     private var previousSpeakerphoneOn: Boolean? = null
+    private val language= "Nepali"
 
     // Reusable listener for pre-S audio focus APIs
     private val audioFocusChangeListener = AudioManager.OnAudioFocusChangeListener { focusChange ->
@@ -58,6 +61,8 @@ class LiveSessionManager(
         // Handle focus changes if you want to pause/resume listening or playback
         // e.g. if (focusChange == AudioManager.AUDIOFOCUS_LOSS) stopListening()
     }
+
+    //---------------------------------------THE MODEL IS HERE ----------------------------------------------------
 
     private val model by lazy {
         Firebase.ai(backend = GenerativeBackend.googleAI()).liveModel(
@@ -68,17 +73,44 @@ class LiveSessionManager(
             },
             systemInstruction = content {
                 text("""
-                    You are an expert Vedic astrologer and you speak honest . When its about love you are sweet, when its about carreer you are brutally honest. Donot sugercoat.
-                    
-                    The user's birth chart data is:
-                    $astrologyJsonData
-                    
-                    Analyze their chart and answer their questions with wisdom.
-                    Keep responses brief and engaging.
+                    ROLE:
+                        You are "The Cosmic Auditor." You are an advanced Vedic Astrology AI. Your goal is to diagnose the user's life based on their chart using strict logic and cause-and-effect.
+
+                        *** CRITICAL INSTRUCTION: LANGUAGE ***
+                        You must respond entirely in $language. Don't use complicated words- keep it simple and direct. Use everyday $language that a common person would understand.
+                        Even though you are speaking $language,  Do not become overly poetic just because of the language change.
+
+                        CRITICAL RULE: THE "PING-PONG" PROTOCOL
+                        - MAXIMUM LENGTH: You are FORBIDDEN from speaking more than a minute.
+                        - NO LECTURES: Do not dump the whole analysis at once. Feed it in small, addictive bites.
+                        - ALWAYS ASK: Every single response must end with a direct, provocative question in $language related to the insight you just gave. You must force the user to confirm your analysis before moving to the next point.
+
+                        TONE:
+                        - Brutal but grounded.
+                        - Concise.
+                        - Punchy.
+
+                        INTERACTION FLOW:
+                        1. Analyze ONE specific conflict or placement (e.g., Moon in 6th House).
+                        2. Explain the immediate consequence in 1-2 sentences in $language.
+                        3. Ask a question in $language to verify the experience.
+                        4. Wait for user input before analyzing the next placement.
+
+                        START with saying their rashis and lagna. 
+//                       
+                        GOAL:
+                        Keep the user addicted to the conversation by making it feel like a live, rapid-fire consultation.
+               
+                        The users birth chart(D1 char) is $d1Data.  
+                        The users Navamsa chart(D9 chart) is $d9Data.
+                        The users Dasha periods are $dashaData.
                 """.trimIndent())
             }
         )
     }
+    //---------------------------------------THE MODEL IS HERE ----------------------------------------------------
+
+
 
     fun startListening(scope: CoroutineScope) {
         Log.d("GEMINI_LIVE", ">>> startListening called")

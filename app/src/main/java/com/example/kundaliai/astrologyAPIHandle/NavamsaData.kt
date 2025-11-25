@@ -3,7 +3,7 @@ package com.example.kundaliai.astrologyAPIHandle
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class NavamsaRequest(
+data class KundliRequest(
     val year: Int,
     val month: Int,
     val date: Int,
